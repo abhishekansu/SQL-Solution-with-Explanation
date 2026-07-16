@@ -1,1 +1,17 @@
+StrataScratch Problem 10090 - "Find the Percentage of Shippable Orders" using Microsoft SQL Server (T-SQL).
 
+SELECT 
+    CAST(SUM(CASE WHEN c.address IS NOT NULL THEN 1 ELSE 0 END) AS FLOAT) 
+    / COUNT(*) * 100 AS shippable_percentage
+FROM orders o
+JOIN customers c
+    ON o.cust_id = c.id;
+
+Line-by-line explanation
+•	SELECT ... AS shippable_percentage → we're producing one final number, the percentage.
+•	SUM(CASE WHEN c.address IS NOT NULL THEN 1 ELSE 0 END) → goes through every order row; if that order's customer has an address, count it as 1, 
+  otherwise 0; then adds all these 1s and 0s together. This gives the count of shippable orders.
+•	CAST(... AS FLOAT) → converts that count into a decimal number so division doesn't get truncated.
+•	/ COUNT(*) → COUNT(*) counts every row (every order) — this is the total number of orders. Dividing shippable/total gives a fraction like 0.75.
+•	* 100 → converts the fraction into a percentage, e.g., 0.75 → 75.
+•	FROM orders o JOIN customers c ON o.cust_id = c.id → connects each order to its customer's address so we know whether it's shippable.
