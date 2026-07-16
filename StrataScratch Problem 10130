@@ -1,4 +1,4 @@
-StrataScratch Problem 10130 - "Find the number of inspections for each risk category by inspection type" using Microsoft SQL Server (T-SQL).
+**StrataScratch Problem 10130 - "Find the number of inspections for each risk category by inspection type" using Microsoft SQL Server (T-SQL).
 
 SELECT
     inspection_type,
