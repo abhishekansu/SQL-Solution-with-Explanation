@@ -1,0 +1,28 @@
+**StrataScratch 10159 — Ranking Most Active Guests (MS SQL Server)
+
+SELECT
+    -- Assign rank based on total messages, highest first
+    -- DENSE_RANK ensures no gaps when there are ties
+    DENSE_RANK() OVER (ORDER BY SUM(n_messages) DESC) AS ranking,
+
+    -- Show which guest this row is about
+    id_guest,
+
+    -- Add up all messages this guest sent across all contacts
+    SUM(n_messages) AS sum_n_messages
+
+-- Only one table needed
+FROM airbnb_contacts
+
+-- Collapse multiple rows per guest into one row
+GROUP BY id_guest
+
+-- Final sort: highest message count at top
+ORDER BY sum_n_messages DESC;
+
+**Time Complexity (Simple Terms)
+
+SQL Server has to read every row in airbnb_contacts once → O(N) scan
+Then sort to compute DENSE_RANK() → O(N log N)
+For interview purposes: just say "linear scan plus a sort — standard for aggregation + window functions"
+
